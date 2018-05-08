@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>To-Do List p7</title>
+</head>
+<body>
+	<h1>To-Do List</h1>
+
+	<form>
+		<input type="text">
+		<input type="submit" value="Save">
+	</form>
+
+	<div id="todo-list"> </div>
+
+	<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+  	
+  	var list = JSON.parse(localStorage.getItem("todolist"));
+
+  	// Check to see if the todolist exists in localStorage and is an array currently
+  	// If not, set a local list variable to an empty array
+  	// Otherwise list is our current list of todoss
+  	if (!Array.isArray(list)) {
+  		list = [];
+  	}
+
+  	function putOnPage() {
+
+  		$("#todo-list").empty(); //empties out the html
+
+  		var insideList = JSON.parse(localStorage.getItem("todolist"));
+
+  		// checks if there are any todos in localStorage
+  		// if yes, set local insideList to our todos
+  		// otherwise set local insideList to our todos
+  		if (!Array.isArray(insideList)) {
+  			insideList = [];
+  		}
+
+  		// render our insideList tods to the page
+  		for (var i = 0; i < insideList.length; i++) {
+  			var p = $("<p>").text(insideList[i]);
+  			var b = $("<button class='delete>").text("x").attr("data-index, i");
+  			p.prepend(b);
+  			$("#todo-list").prepend(p);
+  		}
+
+  	}
+
+  	//render our todos on page load
+  	putOnPage();
+
+  	$(document).on("click", "button.delete", function() {
+  		var todolist = JSON.parse(localStorage.getItem("todolist"));
+  		var currentIndox = $(this).attr("data-index");
+
+  		// deletes the item marked for deletion
+  		todolist.splice(currentIndox, 1);
+  		list = todolist;
+
+  		localStorage.setItem("todolist", JSON.stringify(todolist));
+
+  		putOnPage();
+  	});
+
+  	$("input[type='submit']").on("click", function(event) {
+  		event.preventDefault();
+  		// setting the input value to a variable and then clearing the input
+  		var val = $("input[type='text']").val();
+  		$("input[type='text']").val("");
+
+
+  		list.push(val);
+  		localStorage.setItem("todolist", JSON.stringify(list));
+
+  		putOnPage();
+  	});
+
+  </script>
+
+</body>
+</html>
